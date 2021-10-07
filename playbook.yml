@@ -1,0 +1,34 @@
+- name: Install ansible galaxy roles
+  hosts:
+    - all
+    - localhost
+  tasks:
+    - name: Install ansible galaxy roles
+      command: ansible-galaxy install -r requirements.yml
+      # args:
+      #   creates: etc/ansible/rolese/vandam.conda
+- name: Install and configure eWaterCycle Jupyter
+  hosts:
+    - all
+    - localhost
+  roles:
+    - role: evandam.conda
+  tasks:
+    - name: Update conda
+      conda:
+        name: conda
+        state: latest
+        executable: /opt/conda/bin/conda
+    - name: Create a conda environment
+      conda:
+        name: python
+        version: 3.7
+        environment: python3
+        state: present
+    - name: Install some packages in the environment
+      conda:
+        name:
+          - pandas
+          - numpy
+          - tensorflow
+        environment: python3
